@@ -7,8 +7,8 @@ CREATE TABLE employees (
 id int not null auto_increment,
 first varchar(30) null,
 last varchar(30) null,
-role_id int not null,
-manager_id int not null,
+role_id int null,
+manager_id int null,
 primary key (id)
 );
 
@@ -36,3 +36,4 @@ INSERT INTO employees (first, last, role_id, manager_id)
 VALUES ("Eic", "Westfield", 2, 3);
 
 SELECT * FROM employees;
+
