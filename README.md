@@ -1,4 +1,4 @@
-## weather application 
+## Employee Tracker
 > Employee Tracker!
 
 ## Table of contents
