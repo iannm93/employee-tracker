@@ -18,7 +18,7 @@ const startPrompt =
                         value: searchAllDepartments,
                     },
                     {
-                        name: "View all employees by manager",
+                        name: "View all employees by role",
                         value: searchAllRoles,
                     },
                     {
@@ -26,16 +26,17 @@ const startPrompt =
                         value: employeePrompt,
                     },
                     {
-                        name: "Add a role",
+                        name: "Update a role",
                         value: rolePrompt,
                     },
-                    {
-                        name: "Add a department",
-                        value: departmentPrompt,
-                    },
+                 
                     {
                         name: "Delete an employee",
                         value: whichEmployee
+                    },
+                    {
+                        name: "Exit",
+                        value: connectionEnd
                     }
                  
 
@@ -58,11 +59,13 @@ connection.connect((err) => {
     // createItem();
 });
 
+function start() {
 inquirer.prompt(startPrompt).then((res) => {
     console.log(res)
     res.add_something();
 })
-
+}
+start();
 function whichEmployee(){
     return inquirer
     .prompt([
@@ -105,7 +108,7 @@ function employeePrompt() {
 
             },
             {
-                type: "list",
+                type: "number",
                 name: "role",
                 message: "what's this employee's role",
 
@@ -163,28 +166,6 @@ function rolePrompt() {
 }
 
 
-function departmentPrompt() {
-    return inquirer
-        .prompt([
-            {
-                type: "input",
-                name: "name",
-                message: "What's the department name",
-
-            },
-     
-        ])
-
-
-        .then(res => {
-            addDepartment(res)
-        })
-
-        .catch(err => {
-            console.log(err)
-        })
-}
-
 
 
 
@@ -198,6 +179,7 @@ function addEmployee(res) {
                 throw err;
             }
             searchAllEmployees();
+            start();
         }
     )
 }
@@ -226,6 +208,7 @@ function addRole(res) {
                 throw err;
             }
             searchAllRoles();
+            start();
         }
     )
 }
@@ -240,6 +223,7 @@ function addDepartment(res) {
                 throw err;
             }
             searchAllDepartments();
+            start();
         }
     )
 }
@@ -253,6 +237,7 @@ function searchAllEmployees() {
                 throw err
             } else {
                 console.table(res)
+                start();
             }
         }
     )
@@ -267,6 +252,7 @@ function searchAllDepartments() {
                 throw err
             } else {
                 console.table(res)
+                start();
             }
         }
     )
@@ -274,13 +260,18 @@ function searchAllDepartments() {
 
 function searchAllRoles() {
     connection.query(
-        "SELECT * FROM role", (err, res) => {
+        "SELECT employees.first, employees.last, department.name FROM employees LEFT JOIN department on employees.role_id = department.id;", 
+        (err, res) => {
             if (err) {
                 throw err
             } else {
                 console.table(res)
+                start();
             }
         }
     )
 }
 
+function connectionEnd(){
+    connection.end();
+}

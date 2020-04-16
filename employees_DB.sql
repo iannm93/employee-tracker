@@ -31,23 +31,23 @@ primary key(id)
 
 
 INSERT INTO role (title, salary, department_id)
-VALUES ("Engineering", 70000, 1);
+VALUES ("Engineer", 70000, 1);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ("Engineering", 70000, 1);
+VALUES ("Management", 120000, 2);
 
 INSERT INTO role (title, salary, department_id)
-VALUES ("Executive", 1000000, 2);
+VALUES ("Executive", 250000, 3);
 
 
 
 
 
 INSERT INTO department (name)
-VALUES ("Engineering");
+VALUES ("Engineer");
 
 INSERT INTO department (name)
-VALUES ("Management");
+VALUES ("Manager");
 
 INSERT INTO department (name)
 VALUES ("Executive");
@@ -63,4 +63,4 @@ INSERT INTO employees (first, last, role_id, manager_id)
 VALUES ("Eric", "Westfield", 2, 3);
 
 INSERT INTO employees (first, last , role_id, manager_id)
-VALUES ("Jennifer", "Rodriguez", 3);
+VALUES ("Jennifer", "Rodriguez", 3, null);
