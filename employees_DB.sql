@@ -9,7 +9,7 @@ first varchar(30) null,
 last varchar(30) null,
 role_id int null,
 manager_id int null,
-primary key (id)
+primary key(id)
 );
 
 
@@ -17,14 +17,26 @@ CREATE TABLE role (
 id int not null auto_increment,
 title varchar (30) not null,
 salary decimal(10,2) not null,
-department_id int not null
+department_id int not null,
+primary key(id)
 );
 
 
 CREATE TABLE department (
 id int not null auto_increment,
-name varchar (30) not null
+name varchar (30) not null,
+primary key(id)
 );
+
+INSERT INTO department (name)
+VALUES ("Engineering");
+
+INSERT INTO department (name)
+VALUES ("Management");
+
+INSERT INTO department (name)
+VALUES ("Executive");
+
 
 INSERT INTO employees (first, last, role_id, manager_id)
 VALUES ("Dave", "Smith", 1, 2);
@@ -33,7 +45,11 @@ INSERT INTO employees (first, last, role_id, manager_id)
 VALUES ("Sue", "Danger", 1, 2);
 
 INSERT INTO employees (first, last, role_id, manager_id)
-VALUES ("Eic", "Westfield", 2, 3);
+VALUES ("Eric", "Westfield", 2, 3);
+
+INSERT INTO employees (first, last , role_id, manager_id)
+VALUES ("Jennifer", "Rodriguez", 3);
 
 SELECT * FROM employees;
 
+SELECT * FROM department;

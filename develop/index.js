@@ -16,6 +16,14 @@ const startPrompt =
                     {
                         name: "View all employees by department",
                         value: searchDepartment,
+                    },
+                    {
+                        name: "View all employees by manager",
+                        value: searchManager,
+                    },
+                    {
+                        name: "Add an employee",
+                        value: employeePrompt,
                     }
 
                 ]
@@ -38,10 +46,8 @@ connection.connect((err) => {
 });
 
 inquirer.prompt(startPrompt).then((res) => {
-    //Check what the user selected
-    //Search ny artist
-    if (res.add_something === "EMPLOYEE")
-        employeePrompt();
+    console.log(res)
+    res.add_something();
 })
 
 
@@ -88,7 +94,6 @@ function employeePrompt() {
 
 function addEmployee(res) {
     connection.query(
-        // "INSERT INTO first, last from employees VALUES ",
         "INSERT INTO employees (first, last, role_id, manager_id) VALUES (?, ?, ?, ?)",
 
         [{ first: res.first, }, { last: res.last }, { role_id: res.role }, { manager_id: res.manager }],
@@ -100,6 +105,21 @@ function addEmployee(res) {
         }
     )
 }
+
+
+// function add(res) {
+//     connection.query(
+//         "INSERT INTO employees (first, last, role_id, manager_id) VALUES (?, ?, ?, ?)",
+
+//         [{ first: res.first, }, { last: res.last }, { role_id: res.role }, { manager_id: res.manager }],
+//         (err, res) => {
+//             if (err) {
+//                 throw err;
+//             }
+//             searchAllEmployees();
+//         }
+//     )
+// }
 
 function searchAllEmployees() {
     connection.query(
@@ -125,3 +145,16 @@ function searchDepartment() {
         }
     )
 }
+
+function searchManager() {
+    connection.query(
+        "SELECT * FROM role", (err, res) => {
+            if (err) {
+                throw err
+            } else {
+                console.table(res)
+            }
+        }
+    )
+}
+
