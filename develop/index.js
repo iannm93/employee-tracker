@@ -70,16 +70,15 @@ function whichEmployee(){
     return inquirer
     .prompt([
         {
-            type: "list",
-            name: "delete",
-            message: "which employee would you like to delete?",
-            choices:
-            [
-                "Dave Smith",
-                "Sue Danger",
-                "Eric Westfield",
-                "Jennifer Rodriguez"
-            ]
+            type: "input",
+            name: "first",
+            message: "What's the first name of the employee you would like to delete?",
+           
+        },
+        {
+            type: "input",
+            name: "last",
+            message: "what's the last name of the employee you would like to delete?"
         }
     ])
     .then(res => {
@@ -110,7 +109,7 @@ function employeePrompt() {
             {
                 type: "number",
                 name: "role",
-                message: "what's this employee's role",
+                message: "what's this employee's role ID?",
 
             },
             {
@@ -185,17 +184,20 @@ function addEmployee(res) {
 }
 
 function deleteEmployee(res){
-    connection.query(
-        "DELETE FROM employees WHERE ?",
-       [
-        {
-            delete: res.delete
-        }
-       ],
+      connection.query(
+        "DELETE FROM employees WHERE ? AND ?;",
+
+        [
+            {last: res.last},
+            {first: res.first}
+        ],
         (err, res) => {
-            throw err;
-        },
-        console.table(res)
+            if (err) {
+                throw err;
+            }
+            console.log("employee removed succesfully");
+            start();
+        }
     )
 }
 
