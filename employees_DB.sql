@@ -28,6 +28,21 @@ name varchar (30) not null,
 primary key(id)
 );
 
+
+
+INSERT INTO role (title, salary, department_id)
+VALUES ("Engineering", 70000, 1);
+
+INSERT INTO role (title, salary, department_id)
+VALUES ("Engineering", 70000, 1);
+
+INSERT INTO role (title, salary, department_id)
+VALUES ("Executive", 1000000, 2);
+
+
+
+
+
 INSERT INTO department (name)
 VALUES ("Engineering");
 
@@ -49,7 +64,3 @@ VALUES ("Eric", "Westfield", 2, 3);
 
 INSERT INTO employees (first, last , role_id, manager_id)
 VALUES ("Jennifer", "Rodriguez", 3);
-
-SELECT * FROM employees;
-
-SELECT * FROM department;

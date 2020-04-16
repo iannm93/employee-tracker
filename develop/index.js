@@ -15,16 +15,25 @@ const startPrompt =
                     },
                     {
                         name: "View all employees by department",
-                        value: searchDepartment,
+                        value: searchAllDepartments,
                     },
                     {
                         name: "View all employees by manager",
-                        value: searchManager,
+                        value: searchAllRoles,
                     },
                     {
                         name: "Add an employee",
                         value: employeePrompt,
-                    }
+                    },
+                    {
+                        name: "Add a role",
+                        value: rolePrompt,
+                    },
+                    {
+                        name: "Add a department",
+                        value: departmentPrompt,
+                    },
+                 
 
                 ]
         }
@@ -91,11 +100,72 @@ function employeePrompt() {
         })
 }
 
+function rolePrompt() {
+    return inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "title",
+                message: "What's the employee's title?",
+
+            },
+            {
+                type: "input",
+                name: "salary",
+                message: "What's the employee's salary?",
+
+            },
+            {
+                type: "input",
+                name: "department",
+                message: "what's the employee's department ID",
+
+            },
+        
+        ])
+
+
+        .then(res => {
+            addRole(res)
+        })
+
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+
+function departmentPrompt() {
+    return inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "name",
+                message: "What's the department name",
+
+            },
+     
+        ])
+
+
+        .then(res => {
+            addDepartment(res)
+        })
+
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+
+
+
+
+
 
 function addEmployee(res) {
     connection.query(
-        "INSERT INTO employees (first, last, role_id, manager_id) VALUES (?, ?, ?, ?)",
-
+        "INSERT INTO employees (first, last, role_id, manager_id) VALUES(?, ?, ?, ?)",
         [{ first: res.first, }, { last: res.last }, { role_id: res.role }, { manager_id: res.manager }],
         (err, res) => {
             if (err) {
@@ -107,19 +177,36 @@ function addEmployee(res) {
 }
 
 
-// function add(res) {
-//     connection.query(
-//         "INSERT INTO employees (first, last, role_id, manager_id) VALUES (?, ?, ?, ?)",
+function addRole(res) {
+    connection.query(
+        "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)",
 
-//         [{ first: res.first, }, { last: res.last }, { role_id: res.role }, { manager_id: res.manager }],
-//         (err, res) => {
-//             if (err) {
-//                 throw err;
-//             }
-//             searchAllEmployees();
-//         }
-//     )
-// }
+        [{ title: res.title, }, { salary: res.salary }, { department_id: res.department}],
+        (err, res) => {
+            if (err) {
+                throw err;
+            }
+            searchAllRoles();
+        }
+    )
+}
+
+
+function addDepartment(res) {
+    connection.query(
+        "INSERT INTO department (name) VALUES (?)",
+
+        [{name: res.name}],
+        (err, res) => {
+            if (err) {
+                throw err;
+            }
+            searchAllDepartments();
+        }
+    )
+}
+
+
 
 function searchAllEmployees() {
     connection.query(
@@ -134,7 +221,7 @@ function searchAllEmployees() {
 }
 
 
-function searchDepartment() {
+function searchAllDepartments() {
     connection.query(
         "SELECT * FROM department", (err, res) => {
             if (err) {
@@ -146,7 +233,7 @@ function searchDepartment() {
     )
 }
 
-function searchManager() {
+function searchAllRoles() {
     connection.query(
         "SELECT * FROM role", (err, res) => {
             if (err) {
