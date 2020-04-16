@@ -33,6 +33,10 @@ const startPrompt =
                         name: "Add a department",
                         value: departmentPrompt,
                     },
+                    {
+                        name: "Delete an employee",
+                        value: whichEmployee
+                    }
                  
 
                 ]
@@ -59,6 +63,30 @@ inquirer.prompt(startPrompt).then((res) => {
     res.add_something();
 })
 
+function whichEmployee(){
+    return inquirer
+    .prompt([
+        {
+            type: "list",
+            name: "delete",
+            message: "which employee would you like to delete?",
+            choices:
+            [
+                "Dave Smith",
+                "Sue Danger",
+                "Eric Westfield",
+                "Jennifer Rodriguez"
+            ]
+        }
+    ])
+    .then(res => {
+        deleteEmployee(res)
+    })
+
+    .catch(err => {
+        console.log(err)
+    })
+}
 
 
 function employeePrompt() {
@@ -77,9 +105,9 @@ function employeePrompt() {
 
             },
             {
-                type: "number",
+                type: "list",
                 name: "role",
-                message: "what's this employee's role ID",
+                message: "what's this employee's role",
 
             },
             {
@@ -161,20 +189,6 @@ function departmentPrompt() {
 
 
 
-
-
-// function addEmployee(res) {
-//     connection.query(
-//         "INSERT INTO employees (first, last, role_id, manager_id) VALUES(?, ?, ?, ?)",
-//         [{ first: res.first, }, { last: res.last }, { role_id: res.role }, { manager_id: res.manager }],
-//         (err, res) => {
-//             if (err) {
-//                 throw err;
-//             }
-//             searchAllEmployees();
-//         }
-//     )
-// }
 function addEmployee(res) {
     connection.query(
         "INSERT INTO employees (first, last, role_id, manager_id) VALUES (?, ?, ?, ?)",
@@ -185,6 +199,21 @@ function addEmployee(res) {
             }
             searchAllEmployees();
         }
+    )
+}
+
+function deleteEmployee(res){
+    connection.query(
+        "DELETE FROM employees WHERE ?",
+       [
+        {
+            delete: res.delete
+        }
+       ],
+        (err, res) => {
+            throw err;
+        },
+        console.table(res)
     )
 }
 
@@ -232,7 +261,8 @@ function searchAllEmployees() {
 
 function searchAllDepartments() {
     connection.query(
-        "SELECT * FROM department", (err, res) => {
+        "SELECT employees.first, employees.last, department.name FROM employees LEFT JOIN department  ON employees.role_id = department.id;", 
+        (err, res) => {
             if (err) {
                 throw err
             } else {
