@@ -77,13 +77,13 @@ function employeePrompt() {
 
             },
             {
-                type: "input",
+                type: "number",
                 name: "role",
                 message: "what's this employee's role ID",
 
             },
             {
-                type: "input",
+                type: "number",
                 name: "manager",
                 message: "what's this employee's manager ID?"
             }
@@ -163,10 +163,22 @@ function departmentPrompt() {
 
 
 
+// function addEmployee(res) {
+//     connection.query(
+//         "INSERT INTO employees (first, last, role_id, manager_id) VALUES(?, ?, ?, ?)",
+//         [{ first: res.first, }, { last: res.last }, { role_id: res.role }, { manager_id: res.manager }],
+//         (err, res) => {
+//             if (err) {
+//                 throw err;
+//             }
+//             searchAllEmployees();
+//         }
+//     )
+// }
 function addEmployee(res) {
     connection.query(
-        "INSERT INTO employees (first, last, role_id, manager_id) VALUES(?, ?, ?, ?)",
-        [{ first: res.first, }, { last: res.last }, { role_id: res.role }, { manager_id: res.manager }],
+        "INSERT INTO employees (first, last, role_id, manager_id) VALUES (?, ?, ?, ?)",
+        [ res.first, res.last, res.role, res.manager ],
         (err, res) => {
             if (err) {
                 throw err;
@@ -176,12 +188,10 @@ function addEmployee(res) {
     )
 }
 
-
 function addRole(res) {
     connection.query(
         "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)",
-
-        [{ title: res.title, }, { salary: res.salary }, { department_id: res.department}],
+        [res.title, res.salary, res.department],
         (err, res) => {
             if (err) {
                 throw err;
@@ -195,8 +205,7 @@ function addRole(res) {
 function addDepartment(res) {
     connection.query(
         "INSERT INTO department (name) VALUES (?)",
-
-        [{name: res.name}],
+        [res.name],
         (err, res) => {
             if (err) {
                 throw err;
