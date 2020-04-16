@@ -18,16 +18,20 @@ const startPrompt =
                         value: searchAllDepartments,
                     },
                     {
-                        name: "View all employees by role",
-                        value: searchAllRoles,
+                        name: "View all employees by manager",
+                        value: searchAllManager,
                     },
                     {
                         name: "Add an employee",
                         value: employeePrompt,
                     },
                     {
-                        name: "Update a role",
-                        value: rolePrompt,
+                        name: "Update an employee",
+                        value: employeeUpdate,
+                    },
+                    {
+                        name: "Update a manager",
+                        value: managerPrompt,
                     },
                  
                     {
@@ -130,41 +134,50 @@ function employeePrompt() {
         })
 }
 
-function rolePrompt() {
+function employeeUpdate() {
     return inquirer
         .prompt([
             {
-                type: "input",
-                name: "title",
-                message: "What's the employee's title?",
+                type: "list",
+                name: "first",
+                message: "which employee would you like to update",
+                choices: ["ian",  "dave", "sue"]
 
             },
-            {
-                type: "input",
-                name: "salary",
-                message: "What's the employee's salary?",
 
-            },
-            {
-                type: "input",
-                name: "department",
-                message: "what's the employee's department ID",
-
-            },
-        
         ])
 
 
         .then(res => {
-            addRole(res)
+            updateEmployee(res)
         })
 
         .catch(err => {
             console.log(err)
         })
 }
+function managerPrompt(){
+    return inquirer
+    .prompt([
+        {
+            type: "list",
+            name: "first",
+            message: "which manager would you like to update",
+            choices: ["eric"]
+
+        },
+
+    ])
 
 
+    .then(res => {
+        updateManager(res)
+    })
+
+    .catch(err => {
+        console.log(err)
+    })
+}
 
 
 
@@ -178,7 +191,7 @@ function addEmployee(res) {
                 throw err;
             }
             searchAllEmployees();
-            start();
+            
         }
     )
 }
@@ -216,19 +229,6 @@ function addRole(res) {
 }
 
 
-function addDepartment(res) {
-    connection.query(
-        "INSERT INTO department (name) VALUES (?)",
-        [res.name],
-        (err, res) => {
-            if (err) {
-                throw err;
-            }
-            searchAllDepartments();
-            start();
-        }
-    )
-}
 
 
 
@@ -260,7 +260,7 @@ function searchAllDepartments() {
     )
 }
 
-function searchAllRoles() {
+function searchAllManager() {
     connection.query(
         "SELECT employees.first, employees.last, department.name FROM employees LEFT JOIN department on employees.role_id = department.id;", 
         (err, res) => {
@@ -273,6 +273,18 @@ function searchAllRoles() {
         }
     )
 }
+
+
+function updateEmployee(){
+
+}
+
+function updateManager(){
+
+}
+
+
+
 
 function connectionEnd(){
     connection.end();
